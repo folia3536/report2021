@@ -11,8 +11,10 @@
   <script src="keys.js"></script>
   <script>
     let ncmb = new NCMB(appKey, clientKey);
-    let UTdata = ncmb.DataStore("UpdateTest");
-    let key = "score";
+    let Memo = ncmb.DataStore("Note");
+    let key1 = "memo";
+    let key2 = "startTime";
+    let key3 = "endTime";
 
     function enterData() {
       let uTdata = new UTdata();
@@ -50,43 +52,7 @@
         })
     }
 
-    function sortData() {
-       UTdata
-       .order("score", true)
-       .fetchAll()
-        .then(function(results) {
-          let msg = "";
-          for (let i = 0; i < results.length; i++) {
-            msg += results[i].get(key) + "<br>";
-          }
-          $("#display").removeClass();
-          $("#display").addClass("text-light");
-          $("#display").addClass("bg-primary");
-          $("#display").html(msg);
-        })
-        .catch(function(error) {
-          $("#display").removeClass();
-          $("#display").addClass("bg-warning");
-          $("#display").html("delete fail:" + JSON.stringify(error));
-        })
-    }
-
-    function countData() {
-      UTdata
-      .count()
-      .fetchAll()
-        .then(function(results) {
-          $("#display").removeClass();
-          $("#display").addClass("text-light");
-          $("#display").addClass("bg-primary");
-          $("#display").html("データ数：" + results.count);
-        })
-        .catch(function(error) {
-          $("#display").removeClass();
-          $("#display").addClass("bg-warning");
-          $("#display").html("delete fail:" + JSON.stringify(error));
-        })
-    }
+    
 
     function deleteData() {
       UTdata
@@ -129,20 +95,19 @@
 </head>
 
 <body>
-  <h1 class="text-light bg-secondary">mbaas update</h1>
+  <h1 class="text-light bg-secondary">メモ帳</h1>
   <div>
-    <input type="text" id="data" placeholder="スコア">
+    <input type="text" id="data1" placeholder="メモ内容">
+    <div>開始時刻</div>
+    <input type="datetime-local" id="data2" placeholder="時刻">
+    <div>終了時刻</div>
+    <input type="datetime-local" id=" data3" placeholder="時刻">
+    
+  </div>
+  <div>
     <a onclick="enterData()" class="btn btn-outline-secondary" role="button">Enter</a>
-  </div>
-  <div>
-    <a onclick="fetchAll()" class="btn btn-outline-secondary" role="buton">Fetch All</a>
-    <a onclick="sortData()" class="btn btn-outline-secondary" role="button">Sort</a>
-    <a onclick="countData()" class="btn btn-outline-secondary" role="button">Count</a>
-    <a onclick="deleteData()" class="btn btn-outline-secondary" role="buton">Delete</a>
-  </div>
-  <div>
-    <input type="text" id="update" placeholder="更新">
     <a onclick="updateData()" class="btn btn-outline-secondary" role="button">Update</a>
+    <a onclick="deleteData()" class="btn btn-outline-secondary" role="buton">Delete</a>
   </div>
   <div id="display" class="text-light bg-info">
     Results
