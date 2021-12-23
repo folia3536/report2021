@@ -26,9 +26,7 @@
         .set(key3, value3)
         .save()
         .then(function(results) {
-          $("#display").removeClass();
-          $("#display").addClass("bg-success");
-          $("#display").html("enter success");
+          fetchAll();
         })
         .catch(function(results) {
           $("#display").removeClass();
@@ -38,15 +36,17 @@
     }
 
     function fetchAll() {
-      UTdata.fetchAll()
+      Memo.order(key2, true)
+        .fetchAll()
         .then(function(results) {
-          let msg = "";
+          let msg = "<table><tr><th>Memo</th><th>Start</th><th>End</th><th>Check</th></tr>";
           for (let i = 0; i < results.length; i++) {
-            msg += results[i].get(key) + "<br>";
+
+            msg += "<tr><td>" + results[i].get(key1) + "</td><td>" + results[i].get(key2) + "</td><td>" + results[i].get(key3) + "</td><td>" + "<input type=checkbox id=" + i +" value="+i+" style=transform:scale(2.0)>" + "</td></tr>";
           }
           $("#display").removeClass();
-          $("#display").addClass("text-light");
-          $("#display").addClass("bg-primary");
+          $("#display").addClass("text-dark");
+          $("#display").addClass("bg-light");
           $("#display").html(msg);
         })
         .catch(function(error) {
@@ -109,6 +109,7 @@
     
   </div>
   <div>
+    <a onclick="fetchAll()" class="btn btn-outline-secondary" role="button">Fetch</a>
     <a onclick="enterData()" class="btn btn-outline-secondary" role="button">Enter</a>
     <a onclick="updateData()" class="btn btn-outline-secondary" role="button">Update</a>
     <a onclick="deleteData()" class="btn btn-outline-secondary" role="buton">Delete</a>
