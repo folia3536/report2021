@@ -17,9 +17,13 @@
     let key3 = "endTime";
 
     function enterData() {
-      let uTdata = new UTdata();
-      let value = parseInt($("#data").val());
-      uTdata.set(key, value)
+      let memo = new Memo();
+      let value1 = $("#data1").val();
+      let value2 = $("#data2").val();
+      let value3 = $("#data3").val();
+      memo.set(key1, value1)
+        .set(key2, value2)
+        .set(key3, value3)
         .save()
         .then(function(results) {
           $("#display").removeClass();
@@ -101,7 +105,7 @@
     <div>開始時刻</div>
     <input type="datetime-local" id="data2" placeholder="時刻">
     <div>終了時刻</div>
-    <input type="datetime-local" id=" data3" placeholder="時刻">
+    <input type="datetime-local" id="data3" placeholder="時刻">
     
   </div>
   <div>
