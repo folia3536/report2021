@@ -15,6 +15,7 @@
     let key1 = "memo";
     let key2 = "startTime";
     let key3 = "endTime";
+    let allLen = 0;
 
     function enterData() {
       let memo = new Memo();
@@ -39,10 +40,11 @@
       Memo.order(key2, true)
         .fetchAll()
         .then(function(results) {
+          allLen = results.length;
           let msg = "<table><tr><th>Memo</th><th>Start</th><th>End</th><th>Check</th></tr>";
           for (let i = 0; i < results.length; i++) {
 
-            msg += "<tr><td>" + results[i].get(key1) + "</td><td>" + results[i].get(key2) + "</td><td>" + results[i].get(key3) + "</td><td>" + "<input type=checkbox id=" + i +" value="+i+" style=transform:scale(2.0)>" + "</td></tr>";
+            msg += "<tr><td>" + results[i].get(key1) + "</td><td>" + results[i].get(key2) + "</td><td>" + results[i].get(key3) + "</td><td>" + "<input type=checkbox id=check" + i + " value="+i+" style=transform:scale(2.0)>" + "</td></tr>";
           }
           $("#display").removeClass();
           $("#display").addClass("text-dark");
@@ -77,23 +79,34 @@
     }
 
     function updateData() {
-      UTdata
-      .fetch()
-      .then(function(results){
-        let value = parseInt($("#update").val());
-        results.set(key,value);
-        return results.update();
-      })
-      .then(function(results){
-        $("#display").removeClass();
-        $("#display").addClass("bg-success");
-        $("#display").html("update success");
-      })
-      .catch(function(results){
-        $("#display").removeClass();
-        $("#display").addClass("bg-warning");
-        $("#display").html("delete fail:" + JSON.stringify(error));
-      })
+      for (var i = 0; i < allLen; i++) {
+        let element = document.getElementById('check' + i);
+        if (element.checked) {
+          console.log(i);
+          Memo
+          .order(key2, true)
+          .skip(i)
+          .fetch()
+          .then(function(results){
+            let value1 = $("#data1").val();
+            let value2 = $("#data2").val();
+            let value3 = $("#data3").val();
+            console.log(value1 + " " + value2 + " " + value3);
+            results.set(key1,value1)
+                   .set(key2,value2)
+                   .set(key3,value3);
+            return results.update();
+          })
+          .then(function(results){
+            fetchAll();
+          })
+          .catch(function(results){
+            $("#display").removeClass();
+            $("#display").addClass("bg-warning");
+            $("#display").html("delete fail:" + JSON.stringify(error));
+          })
+        }
+      }
     }
   </script>
 </head>
